@@ -137,8 +137,27 @@ int main()
 				InOutValue["Exp"] = Exp;*/ // allocator 할당이 안돼서 random access는 불가
 			}
 
-			void Load()
+			void Load(rapidjson::Value& InValue)
 			{
+				if (InValue.HasMember("Name"))
+				{
+					Name = InValue["Name"].GetString();
+				}
+				else
+				{
+					_ASSERT(false);
+					// Player 정보를 불러 왔는데 이름이 없다면 이건 심각한 상황!
+					// Log를 남겨서 문제를 추적할 수 있도록 대응!
+					Name = "DefaultName";
+				}
+				if (InValue.HasMember("Level"))
+				{
+					Level = InValue["Level"].GetUint();
+				}
+				if (InValue.HasMember("Exp"))
+				{
+					Exp = InValue["Exp"].GetInt();
+				}
 			}
 
 		private:
@@ -180,6 +199,38 @@ int main()
 			
 			std::ofstream File("TestJson.json");
 			File << Json;
+		}
+
+		// load
+		{
+			std::vector<FPlayer> Players;
+			Players.reserve(PlayerNumbers);
+
+			std::ifstream File("TestJson.json");
+			std::string Json;
+			File >> Json;
+
+			rapidjson::Document Doc;
+			Doc.Parse(Json.data());
+
+			const bool bPlayerInfo = Doc.HasMember("PlayerInfo");
+			_ASSERT(bPlayerInfo);
+			if (bPlayerInfo)
+			{
+				rapidjson::Value& Array = Doc["PlayerInfo"];
+				_ASSERT(Array.IsArray());
+				if (Array.IsArray())
+				{
+					rapidjson::SizeType Size = Array.Size();
+					for (rapidjson::SizeType i = 0; i < Size; ++i)
+					{
+						FPlayer NewPlayer;
+						rapidjson::Value& Value = Array[i];
+						NewPlayer.Load(Value);
+						Players.push_back(NewPlayer);
+					}
+				}
+			}
 		}
 	}
 }
