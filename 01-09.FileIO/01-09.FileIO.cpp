@@ -2,6 +2,9 @@
 #include <fstream>
 #include "ThirdParty/inicpp.h"
 #include <format>
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
 int main()
 {
@@ -113,5 +116,10 @@ int main()
 				std::cout << std::format("Key : {}, Value : {}\n", It.first, It.second.as<std::string>());
 			}
 		}
+	}
+
+	// 3. json file IO
+	{
+
 	}
 }
