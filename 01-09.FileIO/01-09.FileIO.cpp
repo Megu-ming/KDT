@@ -1,7 +1,10 @@
-﻿#include <iostream>
+﻿#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+#include <iostream>
 #include <fstream>
-#include "ThirdParty/inicpp.h"
 #include <format>
+#include <codecvt>
+#include <string>
+#include "ThirdParty/inicpp.h"
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -123,13 +126,19 @@ int main()
 		struct FPlayer
 		{
 			FPlayer() = default;
-			FPlayer(std::string_view InName,const unsigned int InLevel)
+			FPlayer(std::wstring_view InName,const unsigned int InLevel)
 				:Name(InName), Level(InLevel) { }
 			~FPlayer() = default;
 
 			void Save(rapidjson::Value& InOutValue, rapidjson::Document::AllocatorType& InAllocator)
 			{
-				InOutValue.AddMember("Name", rapidjson::StringRef(Name.data()), InAllocator);
+				std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
+				std::string UTF8 = myconv.to_bytes(Name);
+
+				rapidjson::Value String(rapidjson::kStringType);
+				String.SetString(UTF8.c_str(), InAllocator);
+
+				InOutValue.AddMember("Name", String, InAllocator);
 				InOutValue.AddMember("Level", Level, InAllocator);
 				InOutValue.AddMember("Exp", Exp, InAllocator);
 				/*InOutValue["Name"] = rapidjson::StringRef(Name.data());
@@ -141,14 +150,16 @@ int main()
 			{
 				if (InValue.HasMember("Name"))
 				{
-					Name = InValue["Name"].GetString();
+					const char* String = InValue["Name"].GetString();
+					std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
+					Name = myconv.from_bytes(String);
 				}
 				else
 				{
 					_ASSERT(false);
 					// Player 정보를 불러 왔는데 이름이 없다면 이건 심각한 상황!
 					// Log를 남겨서 문제를 추적할 수 있도록 대응!
-					Name = "DefaultName";
+					Name = L"DefaultName";
 				}
 				if (InValue.HasMember("Level"))
 				{
@@ -161,7 +172,7 @@ int main()
 			}
 
 		private:
-			std::string Name;
+			std::wstring Name;
 			unsigned int Level = 0;
 			int Exp = 0;
 		};
@@ -176,7 +187,7 @@ int main()
 			{
 				// std::move : rvalue로 던짐
 				// std::forward : 일반적으로 template에 사용, rvalue면 rvalue로 던지고, lvalue면 lvalue로 던짐 
-				Players.emplace_back("Name" + std::to_string(i), i);
+				Players.emplace_back(L"이름こんにちは哈罗صباير" + std::to_wstring(i), i);
 			}
 
 			rapidjson::Document Doc(rapidjson::kObjectType);
