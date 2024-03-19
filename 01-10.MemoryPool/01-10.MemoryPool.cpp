@@ -90,13 +90,15 @@ int main()
     cout << endl;
     // selfmade memory pool time
     {
-        FMemoryPool MemoryPool{ sizeof(int)*1024,MaxCount };
+        //FMemoryPool MemoryPool{ sizeof(int)*1024,MaxCount };
+        FMemoryPool MemoryPool{ 11,MaxCount }; // 얼라인이 안맞아서 성능 저하가 될 우려가 있다.
         auto Start{ chrono::steady_clock::now() };
         {
 
-            for (size_t i = 0; i < MaxCount; ++i)
+            for (size_t i = 0; i < 3; ++i)
             {
                 int* Test = (int*)MemoryPool.malloc();
+                
                 MemoryPool.free(Test);
             }
         }
@@ -121,6 +123,58 @@ int main()
         }
         auto End{ chrono::steady_clock::now() };
         auto Diff{ End - Start };
-        cout << format("Boost Pool :{}ms", chrono::duration<double, milli>(Diff).count());
+        cout << format("Boost Pool :{}ms\n", chrono::duration<double, milli>(Diff).count());
+    }
+    // Object Pool : 메모리풀은 순수한 메모리 블락만 가지고 있고,
+    // 오브젝트 풀은 placement new를 사용해서 Object를 만들어주는 기능이 추가됨
+    {
+        struct FData
+        {
+            FData()
+            {
+                //cout << __FUNCTION__ << endl;
+            }
+            FData(const int InA, const int InB)
+            {
+
+            }
+            ~FData()
+            {
+                //cout << __FUNCTION__ << endl;
+            }
+        };
+        // boost::object_pool
+        {
+            boost::object_pool<FData> ObjectPool{ MaxCount };
+            ObjectPool.free(ObjectPool.malloc());
+
+            auto Start{ chrono::steady_clock::now() };
+            {
+                for (size_t i = 0; i < MaxCount; ++i)
+                {
+                    FData* Data = ObjectPool.construct();
+                    ObjectPool.destroy(Data);
+                }
+            }
+            auto End{ chrono::steady_clock::now() };
+            auto Diff{ End - Start };
+            cout << format("Object Pool :{}ms\n", chrono::duration<double, milli>(Diff).count());
+        }
+        // selfmade object_pool
+        {
+            FObjectPool<FData> ObjectPool{ MaxCount };
+
+            auto Start{ chrono::steady_clock::now() };
+            {
+                for (size_t i = 0; i < MaxCount; ++i)
+                {
+                    FData* Data = ObjectPool.construct((int)i, 10);
+                    // ObjectPool.destroy(Data);
+                }
+            }
+            auto End{ chrono::steady_clock::now() };
+            auto Diff{ End - Start };
+            cout << format("FObjectPool :{}ms\n", chrono::duration<double, milli>(Diff).count());
+        }
     }
 }
