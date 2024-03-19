@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01-08.ErrorHandling", "01-0
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01-09.FileIO", "01-09.FileIO\01-09.FileIO.vcxproj", "{FBDB29A6-C92E-44F8-A194-4063818A8887}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01-10.MemoryPool", "01-10.MemoryPool\01-10.MemoryPool.vcxproj", "{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -111,6 +113,14 @@ Global
 		{FBDB29A6-C92E-44F8-A194-4063818A8887}.Release|x64.Build.0 = Release|x64
 		{FBDB29A6-C92E-44F8-A194-4063818A8887}.Release|x86.ActiveCfg = Release|Win32
 		{FBDB29A6-C92E-44F8-A194-4063818A8887}.Release|x86.Build.0 = Release|Win32
+		{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}.Debug|x64.ActiveCfg = Debug|x64
+		{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}.Debug|x64.Build.0 = Debug|x64
+		{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}.Debug|x86.ActiveCfg = Debug|Win32
+		{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}.Debug|x86.Build.0 = Debug|Win32
+		{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}.Release|x64.ActiveCfg = Release|x64
+		{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}.Release|x64.Build.0 = Release|x64
+		{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}.Release|x86.ActiveCfg = Release|Win32
+		{6ECEE09A-1CE7-453B-977B-F7EF72E23DAA}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
