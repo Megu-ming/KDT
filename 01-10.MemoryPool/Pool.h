@@ -74,7 +74,7 @@ public:
 	}
 	
 	template<class... Args>
-	T* construct(Args... InArgs)
+	T* construct(Args&&... InArgs)
 	{
 		T* ret = reinterpret_cast<T*>(FMemoryPool::malloc());
 		// std::forward : lvalue -> lvalue, rvalue -> rvalue
