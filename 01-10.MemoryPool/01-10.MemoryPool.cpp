@@ -56,4 +56,71 @@ int main()
     // 고정 사이즈 메모리 풀
     //      - 예산(메모리)를 정해서 그 예산 안에서 사용할게 제한할 수 있다.
     //          - ex)메모리풀 크기를 10으로 고정하면 최대 동시에 10개까지 (인스턴스)만들 수 있다.
+
+    const size_t MaxCount = 100000;
+    // array memory alloc time
+    {
+        auto Start{ chrono::steady_clock::now() };
+        {
+            for (size_t i = 0; i < MaxCount; ++i)
+            {
+                int* Test = new int[1024];
+                delete[] Test;
+            }
+        }
+        auto End{ chrono::steady_clock::now() };
+        auto Diff{ End - Start };
+        cout << format("new, delete :{}ms", chrono::duration<double, milli>(Diff).count());
+    }
+    cout << endl;
+    // single var memory alloc time
+    {
+        auto Start{ chrono::steady_clock::now() };
+        {
+            for (size_t i = 0; i < MaxCount; ++i)
+            {
+                int* Test = new int;
+                delete Test;
+            }
+        }
+        auto End{ chrono::steady_clock::now() };
+        auto Diff{ End - Start };
+        cout << format("new, delete :{}ms", chrono::duration<double, milli>(Diff).count());
+    }
+    cout << endl;
+    // selfmade memory pool time
+    {
+        FMemoryPool MemoryPool{ sizeof(int)*1024,MaxCount };
+        auto Start{ chrono::steady_clock::now() };
+        {
+
+            for (size_t i = 0; i < MaxCount; ++i)
+            {
+                int* Test = (int*)MemoryPool.malloc();
+                MemoryPool.free(Test);
+            }
+        }
+        auto End{ chrono::steady_clock::now() };
+        auto Diff{ End - Start };
+        cout << format("FMemoryPool :{}ms", chrono::duration<double, milli>(Diff).count());
+    }
+    cout << endl;
+    // boost memory pool time
+    {
+        boost::pool<> Pool{ sizeof(int) * 1024,MaxCount };
+        int* TryAlloc = (int*)Pool.malloc();
+        Pool.free(TryAlloc);
+
+        auto Start{ chrono::steady_clock::now() };
+        {
+            for (size_t i = 0; i < MaxCount; ++i)
+            {
+                int* Test = (int*)Pool.malloc();
+                Pool.free(Test);
+            }
+        }
+        auto End{ chrono::steady_clock::now() };
+        auto Diff{ End - Start };
+        cout << format("Boost Pool :{}ms", chrono::duration<double, milli>(Diff).count());
+    }
 }
