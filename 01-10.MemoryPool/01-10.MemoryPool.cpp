@@ -169,7 +169,24 @@ int main()
                 for (size_t i = 0; i < MaxCount; ++i)
                 {
                     FData* Data = ObjectPool.construct((int)i, 10);
-                    // ObjectPool.destroy(Data);
+                    ObjectPool.destroy(Data);
+                }
+            }
+            auto End{ chrono::steady_clock::now() };
+            auto Diff{ End - Start };
+            cout << format("FObjectPool :{}ms\n", chrono::duration<double, milli>(Diff).count());
+        }
+        // selfmade object_pool shared_ptr
+        {
+            FObjectPool<FData> ObjectPool{ MaxCount };
+            shared_ptr<FData> Test;
+            auto Start{ chrono::steady_clock::now() };
+            {
+                for (size_t i = 0; i < MaxCount; ++i)
+                {
+                    shared_ptr<FData> Data = ObjectPool.construct_shared((int)i, 10);
+                    if (i == 0)
+                        Test = Data;
                 }
             }
             auto End{ chrono::steady_clock::now() };

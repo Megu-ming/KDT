@@ -84,6 +84,18 @@ public:
 		return ret;
 	}
 
+	template<class... Args>
+	shared_ptr<T> construct_shared(Args&&...InArgs)
+	{
+		T* ret = reinterpret_cast<T*>(FMemoryPool::malloc());
+		new(ret)T(forward<Args>(InArgs)...);
+
+		return shared_ptr<T>{ret, [this](T* InPointer)
+			{
+				destroy(InPointer);
+			}};
+	}
+
 	void destroy(T* const chunk)
 	{
 		chunk->~T();
