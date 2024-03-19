@@ -160,6 +160,24 @@ int main()
             auto Diff{ End - Start };
             cout << format("Object Pool :{}ms\n", chrono::duration<double, milli>(Diff).count());
         }
+        // boost::object_pool_smart pointer
+        {
+            boost::object_pool<FData> ObjectPool{ MaxCount };
+            ObjectPool.free(ObjectPool.malloc());
+
+            auto Start{ chrono::steady_clock::now() };
+            {
+                for (size_t i = 0; i < MaxCount; ++i)
+                {
+                    FData* Data = ObjectPool.construct();
+                    shared_ptr<FData>{Data, [&ObjectPool](FData* InPointer) {ObjectPool.destroy(InPointer); }};
+                    /*ObjectPool.destroy(Data);*/
+                }
+            }
+            auto End{ chrono::steady_clock::now() };
+            auto Diff{ End - Start };
+            cout << format("Object Pool_shared :{}ms\n", chrono::duration<double, milli>(Diff).count());
+        }
         // selfmade object_pool
         {
             FObjectPool<FData> ObjectPool{ MaxCount };
@@ -191,7 +209,7 @@ int main()
             }
             auto End{ chrono::steady_clock::now() };
             auto Diff{ End - Start };
-            cout << format("FObjectPool :{}ms\n", chrono::duration<double, milli>(Diff).count());
+            cout << format("FObjectPool_shared :{}ms\n", chrono::duration<double, milli>(Diff).count());
         }
     }
 }
