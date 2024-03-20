@@ -15,5 +15,17 @@ struct FUtils
 
 		return Account;
 	}
+
+	static void PrintSystem(bool bFlag, const char* InFunctionName)
+	{
+		if (bFlag)
+		{
+			cout << format("[System]{} sucess\n", InFunctionName);
+		}
+		else
+		{
+			cout << format("[System]{} failed\n", InFunctionName);
+		}
+	}
 };
 

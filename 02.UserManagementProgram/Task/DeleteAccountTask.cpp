@@ -7,12 +7,5 @@ FDeleteAccountTask::FDeleteAccountTask()
 	FAccount Account = FUtils::MakeAccountFromUserinput();
 	const bool Result = GDataBase.DeleteAccount(Account);
 
-	if (Result)
-	{
-		cout << format("[System]{} sucess\n", __FUNCTION__);
-	}
-	else
-	{
-		cout << format("[System]{} failed\n", __FUNCTION__);
-	}
+	FUtils::PrintSystem(Result, __FUNCTION__);
 }
