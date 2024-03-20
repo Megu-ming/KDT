@@ -15,10 +15,9 @@
 
 int main()
 {
-	FAccount Account("Hello", "World");
-
-	FAccount* NewAccount = GDataBase.CreateAccount(Account);
-	GDataBase.DeleteAccount(*NewAccount);
-	GDataBase.DeleteAccount(Account);
-	FAccount* NewAccount2 = GDataBase.CreateAccount(Account);
+	/*for (int i = 0; i < 5; ++i)
+	{
+		FAccount Account("Hello" + to_string(i), "World");
+		GDataBase.CreateAccount(Account);
+	}*/
 }

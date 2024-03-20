@@ -12,4 +12,4 @@
 #include "rapidjson/stringbuffer.h"
 
 using namespace std;
-using FAccountName = std::string_view;
+using FAccountName = std::string;

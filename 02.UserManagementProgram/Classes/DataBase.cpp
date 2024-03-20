@@ -92,8 +92,66 @@ FDataBase::~FDataBase()
 
 void FDataBase::Save()
 {
+	rapidjson::Document Doc{ rapidjson::kObjectType };
+	rapidjson::Document::AllocatorType& Allocator = Doc.GetAllocator();
+
+	rapidjson::Value Array{ rapidjson::kArrayType };
+	for (auto& It : AccountMap)
+	{
+		rapidjson::Value Player{ rapidjson::kObjectType };
+		FAccountSaveEvent Save(It.second, Player, Allocator);
+		Array.PushBack(Player, Allocator);
+	}
+
+	Doc.AddMember("AccountInfo", Array, Allocator);
+
+	rapidjson::StringBuffer Buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> Writer(Buffer);
+	Doc.Accept(Writer);
+	string Json(Buffer.GetString(), Buffer.GetSize());
+
+	ofstream File("AccountInfo.json");
+	File << Json;
 }
 
 void FDataBase::Load()
 {
+	ifstream File("AccountInfo.json");
+	if (!File.is_open())
+		return;
+
+	string Json;
+	string TmpLine;
+	while (getline(File, TmpLine))
+	{
+		Json += TmpLine;
+	}
+
+	rapidjson::Document Doc(rapidjson::kObjectType);
+	Doc.Parse(Json.data());
+
+	const bool bAccountInfo = Doc.HasMember("AccountInfo");
+	_ASSERT(bAccountInfo);
+	if (bAccountInfo)
+	{
+		rapidjson::Value& Array = Doc["AccountInfo"];
+		_ASSERT(Array.IsArray());
+		if (Array.IsArray())
+		{
+			const rapidjson::SizeType Size = Array.Size();
+			for (rapidjson::SizeType i = 0; i < Size; ++i)
+			{
+				FAccount NewAccount;
+				rapidjson::Value& AccountValue = Array[i];
+				FAccountLoadEvent(NewAccount, AccountValue);
+				FAccount* Account = CreateAccount(NewAccount);
+				if (!Account)
+				{
+					// log
+					_ASSERT(false);
+				}
+
+			}
+		}
+	}
 }

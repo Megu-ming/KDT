@@ -45,3 +45,43 @@ struct FAccount
 	}
 };
 
+class FAccountSaveLoader
+{
+	friend class FDataBase;
+protected:
+	FAccountSaveLoader(FAccount& InAccount, rapidjson::Value& InValue)
+		: Account(InAccount), AccountValue(InValue) {}
+
+	void Save(rapidjson::Document::AllocatorType& InAllocator);
+	void Load();
+
+private:
+	FAccount& Account;
+	rapidjson::Value& AccountValue;
+};
+
+class FAccountSaveEvent final : public FAccountSaveLoader
+{
+	friend class FDataBase;
+private:
+	FAccountSaveEvent(FAccount& InAccount, rapidjson::Value& InValue
+	, rapidjson::Document::AllocatorType& InAllocator)
+		: FAccountSaveLoader(InAccount,InValue)
+		,Allocator(InAllocator)
+	{
+		Save(Allocator);
+	}
+private:
+	rapidjson::Document::AllocatorType& Allocator;
+};
+
+class FAccountLoadEvent final : public FAccountSaveLoader
+{
+	friend class FDataBase;
+private:
+	FAccountLoadEvent(FAccount& InAccount, rapidjson::Value& InValue)
+		: FAccountSaveLoader(InAccount, InValue)
+	{
+		Load();
+	}
+};
