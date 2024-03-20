@@ -14,7 +14,7 @@ FAccount* FDataBase::CreateAccount(const FAccount& InAccount)
 	FAccount* Account = FindAccount(InAccount.ID);
 	if (Account)
 	{
-		_ASSERT(false && "이미 해당 계정이 있다!");
+		_ASSERT(false && "이미 해당 계정이 있습니다!");
 		return nullptr;
 	}
 

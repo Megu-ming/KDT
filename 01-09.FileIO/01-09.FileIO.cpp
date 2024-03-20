@@ -219,7 +219,12 @@ int main()
 
 			std::ifstream File("TestJson.json");
 			std::string Json;
-			File >> Json;
+			std::string tmpLine;
+			while (std::getline(File, tmpLine))
+			{
+				Json += tmpLine;
+			}
+			//File >> Json;
 
 			rapidjson::Document Doc;
 			Doc.Parse(Json.data());

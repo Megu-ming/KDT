@@ -38,5 +38,10 @@ struct FAccount
 
 		return bID && bPassword;
 	}
+
+	bool operator!=(const FAccount& InAccount) const
+	{
+		return !(*this == InAccount);
+	}
 };
 
