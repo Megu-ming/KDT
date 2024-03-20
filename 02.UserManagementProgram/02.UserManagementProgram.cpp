@@ -1,6 +1,7 @@
 ﻿#include "MISC/Headers.h"
 #include "Classes/Account.h"
 #include "Classes/DataBase.h"
+#include "Classes/Engine.h"
 
 // C++ 문법을 사용해서 간단한 
 // - 회원가입, 회원탈퇴
@@ -15,6 +16,7 @@
 
 int main()
 {
+	GEngine.Run();
 	/*for (int i = 0; i < 5; ++i)
 	{
 		FAccount Account("Hello" + to_string(i), "World");
