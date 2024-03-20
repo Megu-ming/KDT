@@ -212,4 +212,27 @@ int main()
             cout << format("FObjectPool_shared :{}ms\n", chrono::duration<double, milli>(Diff).count());
         }
     }
+
+    // Memory Header
+    {
+        // [MemoryHeader][FData]
+        // {   12Byte   }{ 4Byte }
+        FMemoryPool MemoryPool{ sizeof(FMemoryHeader) + sizeof(FData),10 };
+        void* Pointer = MemoryPool.malloc();
+        FMemoryHeader* Header = reinterpret_cast<FMemoryHeader*>(Pointer);
+        new(Header)FMemoryHeader();
+        Header->Flag = 999;
+
+        FData* Data = reinterpret_cast<FData*>(Header + 1);
+        new(Data)FData();
+    }
+    // Unreal 스타일
+    {
+        FObjectInitializer Init;
+        Init.Flag = 1234;
+        FObject* Object = FObject::NewObject<FObject>(Init);
+        FTest* Object2 = FObject::NewObject<FTest>(Init);
+        Init.Flag = 1000;
+        FTest* Object3 = FObject::NewObject<FTest>(Init);
+    }
 }

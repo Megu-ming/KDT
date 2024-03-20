@@ -20,7 +20,6 @@ public:
 		, MaxCount(InMaxCount)
 	{
 		const size_t Align = 8;
-		// 11
 		const size_t AlignedBlockSize = BlockSize > Align ? (BlockSize + Align - (BlockSize % Align)) : Align;
 		const size_t MemorySize = AlignedBlockSize * MaxCount;
 		// 제대로 하려면 얼라인먼트까지 고려해야 한다.
@@ -101,4 +100,105 @@ public:
 		chunk->~T();
 		FMemoryPool::free(chunk);
 	}
+};
+
+struct FMemoryHeader
+{
+	int Flag = 0;
+	int Flag2 = 1;
+	int Flag3 = 2;
+};
+
+class FData
+{
+public:
+	FData()
+	{
+		cout << "FData\n";
+	}
+	~FData()
+	{
+			cout << "~FData\n";
+	}
+
+	FMemoryHeader* GetMemoryHeader()
+	{
+		FMemoryHeader* Header = reinterpret_cast<FMemoryHeader*>(this) - 1;
+		return Header;
+	}
+protected:
+	int Value = 2;
+};
+
+struct FObjectInitializer
+{
+	int Flag = 0;
+	int Flag2 = 1;
+	int Flag3 = 2;
+};
+
+class FObjectBase
+{
+public:
+	FObjectBase() {}
+	FObjectBase(const FObjectInitializer& InObjectInitializer)
+		: Flag(InObjectInitializer.Flag)
+		, Flag2(InObjectInitializer.Flag2)
+		, Flag3(InObjectInitializer.Flag3)
+	{
+
+	}
+	virtual ~FObjectBase() {}
+
+protected:
+	// 아래는 값을 초기화 하면 안됨
+	int Flag;
+	int Flag2;
+	int Flag3;
+};
+
+class FObject : public FObjectBase
+{
+public:
+	template<class T>
+	static T* NewObject(const FObjectInitializer& InObjectInitializer)
+	{
+		// template 안에 있는 static 변수는
+		// 각 타입마다 인스턴스가 따로 존재한다
+		static FMemoryPool MemoryPool{ sizeof(T), 10 };
+		FObjectBase* ObjectBase = (FObjectBase*)MemoryPool.malloc();
+		new(ObjectBase) FObjectBase(InObjectInitializer);
+		new(ObjectBase) T();
+		T* NewObject = (T*)ObjectBase;
+		return NewObject;
+	}
+
+	FObject()
+	{
+		Flag;
+		Flag2;
+		Flag3;
+	}
+	~FObject()
+	{
+
+	}
+
+protected:
+	int Value = 2;
+private:
+};
+
+class FTest : public FObject
+{
+public:
+	FTest()
+	{
+		if (Flag == 1000)
+		{
+			cout << "Flag is 1000\n";
+		}
+	}
+
+	int Test = 1000;
 };

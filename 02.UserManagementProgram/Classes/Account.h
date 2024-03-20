@@ -31,8 +31,7 @@ struct FAccount
 	// 예외로 IsEmpty가 true인 경우 무조건 return false 
 	bool operator==(const FAccount& InAccount) const
 	{
-		const bool bEmpty = IsEmpty();
-		if (bEmpty)
+		if (IsEmpty())
 			return false;
 		const bool bID = ID == InAccount.ID;
 		const bool bPassword = Password == InAccount.Password;
