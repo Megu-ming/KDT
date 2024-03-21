@@ -19,11 +19,15 @@ void FEngine::Run()
 		}
 		case ECreateAccount:
 		{
+			FPrintAccountTask PrintAccountTask;
+			FPrintLoginPlayerTask PrintLoginPlayerTask;
 			FCreateAccountTask Task;
 			break;
 		}
 		case EDeleteAccount:
 		{
+			FPrintAccountTask PrintAccountTask;
+			FPrintLoginPlayerTask PrintLoginPlayerTask;
 			FDeleteAccountTask Task;
 			break;
 		}
@@ -32,6 +36,26 @@ void FEngine::Run()
 			FPrintAccountTask Task;
 			break;
 		}
+		case ELogin:
+		{
+			FPrintAccountTask PrintAccountTask;
+			FPrintLoginPlayerTask PrintLoginPlayerTask;
+			FLoginTask Task;
+			break;
+		}
+		case ELogout:
+		{
+			FPrintAccountTask PrintAccountTask;
+			FPrintLoginPlayerTask PrintLoginPlayerTask;
+			FLogoutTask Task;
+			break;
+		}
+		case EPrintLoginPlayer:
+		{
+			FPrintLoginPlayerTask Task;
+			break;
+		}
+
 		default:
 			bTerminated = true;
 			break;
@@ -60,6 +84,9 @@ EMenuEvent FEngine::PrintMenu()
 	cout << "[ 1) 회원 가입              ]" << endl;
 	cout << "[ 2) 회원 탈퇴              ]" << endl;
 	cout << "[ 3) 회원 정보 출력         ]" << endl;
+	cout << "[ 4) 로그인                 ]" << endl;
+	cout << "[ 5) 로그아웃               ]" << endl;
+	cout << "[ 6) 로그인 유저 정보 출력  ]" << endl;
 	cout << "[---------------------------]" << endl;
 	cout << "--> ";
 

@@ -5,10 +5,9 @@
 class FPlayer
 {
 public:
-	void SetName(string_view InName)
-	{
-		Name = InName;
-	}
+	FPlayer(string_view InName)
+		:Name(InName) { }
+public:
 
 	string_view GetName() const { return Name; }
 
