@@ -3,7 +3,7 @@
 
 struct FUtils
 {
-	static FAccount MakeAccountFromUserinput()
+	static FAccount MakeAccountFromUserInput()
 	{
 		FAccount Account;
 		cout << " Input ID: ";
