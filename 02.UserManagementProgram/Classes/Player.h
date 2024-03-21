@@ -1,7 +1,7 @@
 #pragma once
 #include "MISC/Headers.h"
 
-// Account로 로그인을 수행했을 때 생성됨
+// Account로 로그인을 성공했을 때 생성됨
 class FPlayer
 {
 public:
