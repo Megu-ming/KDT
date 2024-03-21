@@ -2,7 +2,6 @@
 #include "MISC/Headers.h"
 #include "Account.h"
 
-
 // FAccount의 컨테이너 역할
 class FDataBase final
 {
@@ -29,6 +28,7 @@ public:
 	FDataBase();
 	~FDataBase();
 
+	const unordered_map<FAccountName, FAccount>& GetAccountMap() const { return AccountMap; }
 private:
 	void Save();
 	void Load();

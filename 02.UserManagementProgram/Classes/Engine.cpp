@@ -27,6 +27,14 @@ void FEngine::Run()
 			FDeleteAccountTask Task;
 			break;
 		}
+		case EPrintAccount:
+		{
+			FPrintAccountTask Task;
+			break;
+		}
+		default:
+			bTerminated = true;
+			break;
 		}
 	}
 
@@ -51,6 +59,7 @@ EMenuEvent FEngine::PrintMenu()
 	cout << "[ 0) 프로그램 종료          ]" << endl;
 	cout << "[ 1) 회원 가입              ]" << endl;
 	cout << "[ 2) 회원 탈퇴              ]" << endl;
+	cout << "[ 3) 회원 정보 출력         ]" << endl;
 	cout << "[---------------------------]" << endl;
 	cout << "--> ";
 
