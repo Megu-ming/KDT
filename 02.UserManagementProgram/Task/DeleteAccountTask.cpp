@@ -4,6 +4,7 @@
 
 FDeleteAccountTask::FDeleteAccountTask()
 {
+	cout << "[----- Delete Account ------]" << endl;
 	FAccount Account = FUtils::MakeAccountFromUserInput();
 	const bool Result = GDataBase.DeleteAccount(Account);
 

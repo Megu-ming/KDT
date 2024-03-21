@@ -4,7 +4,6 @@
 FPrintAccountTask::FPrintAccountTask()
 {
 	const auto& AccountMap = GDataBase.GetAccountMap();
-	cout << "[---------------------------]" << endl;
 	cout << "[--------- Account ---------]" << endl;
 	for (auto& It : AccountMap)
 	{
