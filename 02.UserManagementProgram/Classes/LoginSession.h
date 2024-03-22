@@ -9,7 +9,9 @@ public:
 	pair<FPlayer*, const char*> Login(const FAccount& InAccount);
 	bool IsLogin(const FAccountName& InAccountName);
 
-	pair<bool, const char*> LogOut(const FAccount& InAccount);
+	FPlayer* GetLoginPlayer(const FAccountName& InAccountName);
+
+	pair<bool, const char*> Logout(const FAccount& InAccount);
 
 	const unordered_map<FAccountName, FPlayer> GetPlayerMap() { return PlayerMap; }
 

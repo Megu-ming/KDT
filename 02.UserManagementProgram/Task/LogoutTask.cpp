@@ -1,13 +1,13 @@
 #include "LogoutTask.h"
 #include "Classes/LoginSession.h"
 #include "MISC/Utils.h"
+#include "Classes/DataBase.h"
 
 FLogoutTask::FLogoutTask()
 {
-	cout << "[--------- Logout ----------]" << endl;
+	cout << "[---------- Logout ---------]" << endl;
 	const FAccount Account = FUtils::MakeAccountFromUserInput();
-	pair Result = GLoginSession.LogOut(Account);
-	cout << Result.second << endl;
+	ExecuteTask(Account);
 }
 
 FLogoutTask::FLogoutTask(const FAccount& InAccount)
@@ -17,6 +17,13 @@ FLogoutTask::FLogoutTask(const FAccount& InAccount)
 
 void FLogoutTask::ExecuteTask(const FAccount& InAccount)
 {
-	pair Result = GLoginSession.LogOut(InAccount);
+	FPlayer* Player = GLoginSession.GetLoginPlayer(InAccount.ID);
+	if (!Player)
+	{
+		cout << "[LogoutTask] Error\n";
+		return;
+	}
+
+	pair Result = GLoginSession.Logout(InAccount);
 	cout << Result.second << endl;
 }

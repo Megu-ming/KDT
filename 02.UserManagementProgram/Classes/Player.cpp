@@ -34,7 +34,7 @@ bool FPlayerSaveLoader::Load(const FAccountName& InAccountName)
 	if (InAccountName.empty())
 		return false;
 
-	string FilePath = "PlayerInfo/" + Player.Name + ".json";
+	const string FilePath = "PlayerInfo/" + Player.Name + ".json";
 	ifstream File(FilePath);
 	if (File.is_open())
 		return false;

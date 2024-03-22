@@ -150,7 +150,6 @@
     <ClCompile Include="Task\LogoutTask.cpp" />
     <ClCompile Include="Task\PrintAccountTask.cpp" />
     <ClCompile Include="Task\PrintLoginPlayerTask.cpp" />
-    <ClCompile Include="Task\PrintPlayerInfoTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\Account.h" />
@@ -167,7 +166,6 @@
     <ClInclude Include="Task\LogoutTask.h" />
     <ClInclude Include="Task\PrintAccountTask.h" />
     <ClInclude Include="Task\PrintLoginPlayerTask.h" />
-    <ClInclude Include="Task\PrintPlayerInfoTask.h" />
     <ClInclude Include="Task\Task.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

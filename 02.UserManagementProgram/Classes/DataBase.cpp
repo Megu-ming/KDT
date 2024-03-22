@@ -76,7 +76,10 @@ bool FDataBase::DeleteAccount(const FAccount& InAccount)
 		return false;
 	}
 
-	AccountMap.erase(Account->ID);
+	AccountMap.erase(InAccount.ID);
+
+	string DeleteFileCmd = "del /q .\\PlayerInfo\\" + InAccount.ID + ".json";
+	system(DeleteFileCmd.c_str());
 
 	return true;
 }

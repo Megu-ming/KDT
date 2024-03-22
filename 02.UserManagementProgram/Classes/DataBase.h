@@ -5,6 +5,8 @@
 // FAccount의 컨테이너 역할
 class FDataBase final
 {
+	friend struct FLoginTask;
+	friend class FLoginSession;
 public:
 	// 회원 가입
 	FAccount* CreateAccount(const FAccount& InAccount);

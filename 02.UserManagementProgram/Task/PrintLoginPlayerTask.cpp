@@ -8,6 +8,7 @@ FPrintLoginPlayerTask::FPrintLoginPlayerTask()
 	for (auto& It : AccountMap)
 	{
 		cout << format("-> Name: {}\n", It.second.GetName());
+		cout << format("-> Level: {}\n", It.second.GetLevel());
 	}
 	cout << "[---------------------------]" << endl;
 }
