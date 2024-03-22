@@ -2,6 +2,8 @@
 #include "../03-01.StaticLibrary/framework.h"
 #include "../03-02.StaticLibrary/framework.h"
 #include "../03-03.StaticLibrary/framework.h"
+#include "../03-04.DLL/framework.h"
+
 // [Windows 기준]
 // lib, dll
 // - Windows에서만 사용이 가능하다.
@@ -46,10 +48,44 @@
 // 해당 라이브러리를 사용하는 exe 또는 A,B라이브러리 모두 포함해야 빌드가 성공한다.
 // dll이 동일한 상황이라면 exe에서 해당 dll만 포함하면 된다.
 
+// [Dynamic Library]
+// - lib는 우리가 만든 프로그램을 배포할 때 포함하지 않아야 하지만, dll의 경우 dll파일도 같이 배포해야 한다.
+//      - dll은 dll만 수정해서 교체하면 수정된 버전으로 코드가 동작한다.
+//      - lib가 수정이 발생 했을 때는 exe를 교체해야 수정된 버전으로 동작한다.
+//      - dll을 가져다 쓰는 구조를 잘 짜두면 exe가 실행되고 있는 시점에 dll을 교체할 수 있다.(Ex, 언리얼:라이브 코딩)
+//          - exe가 켜지고, 패치서버에 접속해서 dll만 교체 가능한 경우 새로운 dll을 받아와서 패치 가능
+//              - 하지만 보통은 별도의 런처 프로그램을 두고 패치를 하는 경우가 대부분
+// - 런타임 라이브러리 설정이 불일치 해도 된다.
+// - DLL이 MD인 경우 내가 만든 환경에서는 문제가 없었는데, 배포를 했을 때 이 DLL을 사용하는 프로그램이 (MT일 때, 또는 그 반대)
+//      - 메모리를 dll함수를 통해서 할당하는 경우 할ㄹ당한 dll에서 해제를 해야 문제가 없다. 그렇지 않으면 crash 발생
+// - 언리얼은 에디터의 경우 
+//      - 각 모듈별로 별도로 dll로 빌드가 된다. (우리가 언리얼에서 작성할 모듈도 에디터에서는 dll로 빌드가 돼서)
+//          - 에디터라는 프로그램이 우리의 dll을 로드하는 구조
+//      - 패키징의 과정을 거쳐서 배포용으로 만드는 경우 (기존에 dll로 있던 파일이)lib로 취급되어서 빌드가 되는 특징이 있다.
+
+// dll 포함하는 방법
+// 0. 라이브러리를 참조할 프로젝트에 우클릭 -> 추가 -> 참조 -> 원하는 라이브러리 프로젝트 선택
+// 1. 프로젝트 속성에 추가
+//  - 프로젝트 속성 -> 링커 -> 일반 -> 추가 라이브러리 디렉터리
+//      - 라이브러리 경로를 추가한다
+//  - 프로젝트 속성 -> 링커 -> 입력 -> 추가 종속성
+//      - 라이브러리 이름을 추가한다
+// 2. 소스코드에 #pragma comment로 추가
+
 int main()
 {
     std::cout << "Hello World!\n";
     fnMy0301StaticLibrary();
     fnMy0302StaticLibrary();
     fnMy0303StaticLibrary();
+
+
+    // DLL의 경우 MT, MD가 다른 경우 메모리 할당
+    // 해제에서 문제가 발생할 수 있다.
+    int* Pointer = nullptr;
+    fnMy0304DLL(&Pointer);
+    // delete Pointer;
+    fnMy0304DLLFree(&Pointer);
+    FClass Instance;
+    Instance.Test2();
 }

@@ -35,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03-02.StaticLibrary", "03-0
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03-03.StaticLibrary", "03-03.StaticLibrary\03-03.StaticLibrary.vcxproj", "{3AA359FB-791E-4003-A9D2-A2DB089A1594}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03-04.DLL", "03-04.DLL\03-04.DLL.vcxproj", "{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -171,6 +173,14 @@ Global
 		{3AA359FB-791E-4003-A9D2-A2DB089A1594}.Release|x64.Build.0 = Release|x64
 		{3AA359FB-791E-4003-A9D2-A2DB089A1594}.Release|x86.ActiveCfg = Release|Win32
 		{3AA359FB-791E-4003-A9D2-A2DB089A1594}.Release|x86.Build.0 = Release|Win32
+		{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}.Debug|x64.ActiveCfg = Debug|x64
+		{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}.Debug|x64.Build.0 = Debug|x64
+		{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}.Debug|x86.ActiveCfg = Debug|Win32
+		{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}.Debug|x86.Build.0 = Debug|Win32
+		{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}.Release|x64.ActiveCfg = Release|x64
+		{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}.Release|x64.Build.0 = Release|x64
+		{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}.Release|x86.ActiveCfg = Release|Win32
+		{EE91AC4C-D85F-46AC-BECE-DE5AB511C6CC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
