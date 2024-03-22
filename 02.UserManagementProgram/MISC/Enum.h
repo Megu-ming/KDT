@@ -11,4 +11,5 @@ enum EMenuEvent : uint8_t
 	ELogin = 4,
 	ELogout = 5,
 	EPrintLoginPlayer = 6,
+	EPrintPlayerInfoTask = 7,
 };

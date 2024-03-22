@@ -11,7 +11,7 @@ public:
 
 	pair<bool, const char*> LogOut(const FAccount& InAccount);
 
-	const unordered_map<FAccountName, FPlayer> const GetPlayerMap() { return PlayerMap; }
+	const unordered_map<FAccountName, FPlayer> GetPlayerMap() { return PlayerMap; }
 
 private:
 	unordered_map<FAccountName, FPlayer> PlayerMap;

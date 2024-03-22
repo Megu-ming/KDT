@@ -55,7 +55,11 @@ void FEngine::Run()
 			FPrintLoginPlayerTask Task;
 			break;
 		}
-
+		case EPrintPlayerInfoTask:
+		{
+			FPrintPlayerInfoTask Task;
+			break;
+		}
 		default:
 			bTerminated = true;
 			break;
@@ -87,6 +91,7 @@ EMenuEvent FEngine::PrintMenu()
 	cout << "[ 4) 로그인                 ]" << endl;
 	cout << "[ 5) 로그아웃               ]" << endl;
 	cout << "[ 6) 로그인 유저 정보 출력  ]" << endl;
+	cout << "[ 7) 유저 정보 수정         ]" << endl;
 	cout << "[---------------------------]" << endl;
 	cout << "--> ";
 

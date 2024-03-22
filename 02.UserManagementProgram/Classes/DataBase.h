@@ -30,8 +30,11 @@ public:
 
 	const unordered_map<FAccountName, FAccount>& GetAccountMap() const { return AccountMap; }
 private:
-	void Save();
-	void Load();
+	void SaveAccount();
+	void LoadAccount();
+
+	bool SavePlayer(class FPlayer& InPlayer);
+	bool LoadPlayer(const FAccountName& InAccountName, class FPlayer& outPlayer);
 
 private:
 	unordered_map<FAccountName, FAccount> AccountMap;
