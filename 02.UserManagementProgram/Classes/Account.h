@@ -1,16 +1,14 @@
 #pragma once
 #include "MISC/Headers.h"
 
+// ID와 Password를 담는 구조체
 struct FAccount
 {
 	FAccountName ID;
 	string Password;
 	FAccount() = default;
 	FAccount(string_view InID, string_view InPassword)
-		:ID(InID), Password(InPassword) {}
-
-	// void Save();
-	// void Load();
+		: ID(InID), Password(InPassword) {}
 
 	bool IsEmpty() const
 	{
@@ -18,24 +16,26 @@ struct FAccount
 		const bool bPassword = Password.empty();
 
 		// 둘 중 하나라도 비어있으면 true
-		// 둘 다 차있으면 false
+		// 둘다 차있으면 false
 		return bID || bPassword;
 	}
 
-	// 예외로 IsEmpty가 true인 경우 무조건 return false 
+	// 예외로 IsEmpty가 true인 경우 무조건 return false
 	bool IsEqual(const FAccount& InAccount) const
 	{
 		return *this == InAccount;
 	}
 
-	// 예외로 IsEmpty가 true인 경우 무조건 return false 
+	// 예외로 IsEmpty가 true인 경우 무조건 return false
 	bool operator==(const FAccount& InAccount) const
 	{
-		if (IsEmpty())
-			return false;
+		const bool bEmpty = IsEmpty();
+		if (bEmpty) { return false; }
+
 		const bool bID = ID == InAccount.ID;
 		const bool bPassword = Password == InAccount.Password;
 
+		// 둘다 같아야 true
 		return bID && bPassword;
 	}
 
@@ -52,6 +52,7 @@ protected:
 	FAccountSaveLoader(FAccount& InAccount, rapidjson::Value& InValue)
 		: Account(InAccount), AccountValue(InValue) {}
 
+protected:
 	void Save(rapidjson::Document::AllocatorType& InAllocator);
 	void Load();
 
@@ -64,18 +65,18 @@ class FAccountSaveEvent final : public FAccountSaveLoader
 {
 	friend class FDataBase;
 private:
-	FAccountSaveEvent(FAccount& InAccount, rapidjson::Value& InValue
-	, rapidjson::Document::AllocatorType& InAllocator)
-		: FAccountSaveLoader(InAccount,InValue)
-		,Allocator(InAllocator)
+	FAccountSaveEvent(FAccount& InAccount, rapidjson::Value& InValue,
+		rapidjson::Document::AllocatorType& InAllocator)
+		: FAccountSaveLoader(InAccount, InValue)
+		, Allocator(InAllocator)
 	{
 		Save(Allocator);
 	}
+
 	FAccountSaveEvent(const FAccountSaveEvent&) = delete;
 	FAccountSaveEvent(const FAccountSaveEvent&&) = delete;
 	FAccountSaveEvent& operator=(const FAccountSaveEvent&) = delete;
 
-private:
 	rapidjson::Document::AllocatorType& Allocator;
 };
 

@@ -3,7 +3,8 @@
 
 enum EMenuEvent : uint8_t
 {
-	ETerminated = 0,
+	ETerminate = 0,
+
 	ECreateAccount = 1,
 	EDeleteAccount = 2,
 	EPrintAccount = 3,
@@ -11,5 +12,4 @@ enum EMenuEvent : uint8_t
 	ELogin = 4,
 	ELogout = 5,
 	EPrintLoginPlayer = 6,
-	EPrintPlayerInfoTask = 7,
 };

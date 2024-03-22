@@ -12,11 +12,9 @@ void FEngine::Run()
 		const EMenuEvent Event = PrintMenu();
 		switch (Event)
 		{
-		case ETerminated:
-		{
+		case ETerminate:
 			bTerminated = true;
 			break;
-		}
 		case ECreateAccount:
 		{
 			FPrintAccountTask PrintAccountTask;
@@ -68,12 +66,13 @@ void FEngine::Run()
 
 void FEngine::Init()
 {
-	cout << format("[System]Start {} \n", __FUNCTION__);
+	cout << format("[System]Start {}\n", __FUNCTION__);
 }
 
 void FEngine::Release()
 {
-	cout << format("[System]Shutdown {} \n", __FUNCTION__);
+	cout << format("[System]Shutdown {}\n", __FUNCTION__);
+	FAllPlayerLogoutTask Task;
 }
 
 EMenuEvent FEngine::PrintMenu()

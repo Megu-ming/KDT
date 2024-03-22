@@ -11,7 +11,7 @@ FDeleteAccountTask::FDeleteAccountTask()
 	{
 		FLogoutTask LogoutTask(Account);
 	}
-	const bool Result = GDataBase.DeleteAccount(Account);
+	bool bResult = GDataBase.DeleteAccount(Account);
 
-	FUtils::PrintSystem(Result, __func__);
+	FUtils::PrintSystemSuccessOrFailed(bResult, __func__);
 }

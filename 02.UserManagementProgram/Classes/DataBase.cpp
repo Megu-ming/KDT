@@ -1,5 +1,5 @@
 #include "DataBase.h"
-#include "Classes/Player.h"
+#include "Player.h"
 
 FDataBase GDataBase;
 
@@ -7,19 +7,19 @@ FAccount* FDataBase::CreateAccount(const FAccount& InAccount)
 {
 	if (InAccount.IsEmpty())
 	{
-		// _ASSERT(false && "계정 정보가 비어 있습니다.");
+		_ASSERT(false && "계정 정보가 비어 있습니다.");
 		return nullptr;
 	}
 
-	// 이미 있는 아이디라면 : 요청 반려
+	// 이미 있는 ID라면 요청 반려
 	FAccount* Account = FindAccount(InAccount.ID);
 	if (Account)
 	{
-		// _ASSERT(false && "이미 해당 계정이 있습니다!");
+		_ASSERT(false && "이미 해당 계정이 있다!");
 		return nullptr;
 	}
 
-	pair Pair = AccountMap.insert(make_pair(InAccount.ID, InAccount));
+	pair Pair = AccountMap.insert(std::make_pair(InAccount.ID, InAccount));
 	if (!Pair.second)
 	{
 		_ASSERT(false);
@@ -32,8 +32,12 @@ FAccount* FDataBase::CreateAccount(const FAccount& InAccount)
 FAccount* FDataBase::FindAccount(const FAccountName& InID)
 {
 	auto It = AccountMap.find(InID);
+
+	// 해당 ID를 찾을 수 없습니다.
 	if (It == AccountMap.end())
+	{
 		return nullptr;
+	}
 
 	return &It->second;
 }
@@ -46,16 +50,16 @@ FAccount* FDataBase::CheckAccount(const FAccount& InAccount)
 		return nullptr;
 	}
 
-	// 해당 ID로 된 account가 있는 지 검사
+	// 해당 ID로 된 Account가 있는지 확인한다
 	FAccount* Account = FindAccount(InAccount.ID);
 	if (!Account)
-	{	
+	{
 		// 해당 ID로 계정 정보를 검색할 수 없다
 		_ASSERT(false && "해당 ID로 계정 정보를 검색할 수 없다");
 		return nullptr;
 	}
 
-	// InAccount와 찾아온 계정 정보가 동일한 지 확인
+	// InAccount와 찾아온 계정 정보가 동일한지 확인
 	if (*Account != InAccount)
 	{
 		// 비밀번호가 일치하지 않습니다!
@@ -71,7 +75,6 @@ bool FDataBase::DeleteAccount(const FAccount& InAccount)
 	FAccount* Account = CheckAccount(InAccount);
 	if (!Account)
 	{
-		// 해당 계정이 없다면
 		_ASSERT(false);
 		return false;
 	}
@@ -96,14 +99,14 @@ FDataBase::~FDataBase()
 
 void FDataBase::SaveAccount()
 {
-	rapidjson::Document Doc{ rapidjson::kObjectType };
+	rapidjson::Document Doc(rapidjson::kObjectType);
 	rapidjson::Document::AllocatorType& Allocator = Doc.GetAllocator();
 
-	rapidjson::Value Array{ rapidjson::kArrayType };
+	rapidjson::Value Array(rapidjson::kArrayType);
 	for (auto& It : AccountMap)
 	{
-		rapidjson::Value Player{ rapidjson::kObjectType };
-		FAccountSaveEvent Save(It.second, Player, Allocator);
+		rapidjson::Value Player(rapidjson::kObjectType);
+		FAccountSaveEvent Save{ It.second, Player, Allocator };
 		Array.PushBack(Player, Allocator);
 	}
 
@@ -112,26 +115,26 @@ void FDataBase::SaveAccount()
 	rapidjson::StringBuffer Buffer;
 	rapidjson::Writer<rapidjson::StringBuffer> Writer(Buffer);
 	Doc.Accept(Writer);
-	string Json(Buffer.GetString(), Buffer.GetSize());
+	std::string Json(Buffer.GetString(), Buffer.GetSize());
 
-	ofstream File("AccountInfo.json");
+	std::ofstream File("AccountInfo.json");
 	File << Json;
 }
 
 void FDataBase::LoadAccount()
 {
-	ifstream File("AccountInfo.json");
+	std::ifstream File("AccountInfo.json");
 	if (!File.is_open())
+	{
 		return;
+	}
 
 	string Json;
-	string templine;
-	while (getline(File, templine))
 	{
-		Json += templine;
+		string Temp;
+		while (getline(File, Temp)) { Json += Temp; }
+		if (Json.empty()) { return; }
 	}
-	if (Json.empty())
-		return;
 
 	rapidjson::Document Doc(rapidjson::kObjectType);
 	Doc.Parse(Json.data());
@@ -149,11 +152,11 @@ void FDataBase::LoadAccount()
 			{
 				FAccount NewAccount;
 				rapidjson::Value& AccountValue = Array[i];
-				FAccountLoadEvent(NewAccount, AccountValue);
+				FAccountLoadEvent Load(NewAccount, AccountValue);
 				FAccount* Account = CreateAccount(NewAccount);
 				if (!Account)
 				{
-					// log
+					// Log
 					_ASSERT(false);
 				}
 			}
@@ -164,11 +167,13 @@ void FDataBase::LoadAccount()
 bool FDataBase::SavePlayer(FPlayer& InPlayer)
 {
 	FPlayerSaveLoader PlayerSaveLoader(InPlayer);
-	return PlayerSaveLoader.Save();
+	const bool bSave = PlayerSaveLoader.Save();
+	return bSave;
 }
 
-bool FDataBase::LoadPlayer(const FAccountName& InAccountName, FPlayer& outPlayer)
+bool FDataBase::LoadPlayer(const FAccountName& InAccountName, FPlayer& OutPlayer)
 {
-	FPlayerSaveLoader PlayerSaveLoader(outPlayer);
-	return PlayerSaveLoader.Load(InAccountName);
+	FPlayerSaveLoader PlayerSaveLoader(OutPlayer);
+	const bool bLoad = PlayerSaveLoader.Load(InAccountName);
+	return bLoad;
 }

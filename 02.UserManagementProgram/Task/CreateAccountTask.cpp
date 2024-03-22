@@ -8,5 +8,5 @@ FCreateAccountTask::FCreateAccountTask()
 	const FAccount Account = FUtils::MakeAccountFromUserInput();
 	FAccount* Result = GDataBase.CreateAccount(Account);
 	
-	FUtils::PrintSystem(Result, __func__);
+	FUtils::PrintSystemSuccessOrFailed(Result, __func__);
 }

@@ -144,6 +144,7 @@
     <ClCompile Include="Classes\Engine.cpp" />
     <ClCompile Include="Classes\LoginSession.cpp" />
     <ClCompile Include="Classes\Player.cpp" />
+    <ClCompile Include="Task\AllPlayerLogoutTask.cpp" />
     <ClCompile Include="Task\CreateAccountTask.cpp" />
     <ClCompile Include="Task\DeleteAccountTask.cpp" />
     <ClCompile Include="Task\LoginTask.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="MISC\Enum.h" />
     <ClInclude Include="MISC\Headers.h" />
     <ClInclude Include="MISC\Utils.h" />
+    <ClInclude Include="Task\AllPlayerLogoutTask.h" />
     <ClInclude Include="Task\CreateAccountTask.h" />
     <ClInclude Include="Task\DeleteAccountTask.h" />
     <ClInclude Include="Task\LoginTask.h" />

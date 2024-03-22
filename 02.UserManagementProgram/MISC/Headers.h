@@ -14,4 +14,4 @@
 #include "Enum.h"
 
 using namespace std;
-using FAccountName = std::string;
+using FAccountName = string;
