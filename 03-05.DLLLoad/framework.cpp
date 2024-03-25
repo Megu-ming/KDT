@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <iostream>
 
 void MYDLLLOAD_API fnMy0305DLL(int** InPointer)
 {

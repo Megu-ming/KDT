@@ -2,7 +2,8 @@
 #include "../03-01.StaticLibrary/framework.h"
 #include "../03-02.StaticLibrary/framework.h"
 #include "../03-03.StaticLibrary/framework.h"
-#include "../03-04.DLL/framework.h"
+#include "../03-04.DLL/framework.h"/*
+#include "../03-05.DLLLoad/framework.h"*/
 
 // [Windows 기준]
 // lib, dll
@@ -88,4 +89,21 @@ int main()
     fnMy0304DLLFree(&Pointer);
     FClass Instance;
     Instance.Test2();
+
+    // @TODO : 동적 로드
+    HINSTANCE hDLLInstance = LoadLibrary(L"03-05.DLLLoad.dll");
+    if (!hDLLInstance)
+    {
+        return 0;
+    }
+    using MYPROC = void(*)(int**);
+
+    MYPROC fnMy0305DLL = (MYPROC)GetProcAddress(hDLLInstance, "fnMy0305DLL");
+    MYPROC fnMy0305DLLFree = (MYPROC)GetProcAddress(hDLLInstance, "fnMy0305DLLFree");
+
+    int* Test = nullptr;
+    fnMy0305DLL(&Test);
+    fnMy0305DLLFree(&Test);
+
+    FreeLibrary(hDLLInstance);
 }
