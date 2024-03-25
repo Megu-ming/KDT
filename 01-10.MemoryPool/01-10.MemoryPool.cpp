@@ -28,7 +28,7 @@ int main()
         FClass* Class = (FClass*)malloc(sizeof(FClass));
         // placement new : 이미 할당된 메모리 블록에
         // 객체(인스턴스)를 만들어준다.(생성자 호출)
-        new(Class)FClass();
+        new(Class)FClass(); // 생성자 호출
         Class->~FClass();
         free(Class);
     }
